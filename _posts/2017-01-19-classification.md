@@ -58,15 +58,15 @@ rather than some other type of generalized linear model.
 We can use the following codes to deal with the logistic regression.
 
 ```javascript
-train <- (Year < 2005)
-Smarket.2005 <- Smarket[!train, ]
+train          <- (Year < 2005)
+Smarket.2005   <- Smarket[!train, ]
 Direction.2005 <- Direction[!train]
 
-glm.fit <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume,
-               data = Smarket, family = binomial, subset = train)
+glm.fit   <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume,
+                 data = Smarket, family = binomial, subset = train)
 glm.probs <- predict(glm.fit, Smarket.2005, type = "response")
 
-glm.pred <- rep('Down', 252)
+glm.pred                 <- rep('Down', 252)
 glm.pred[glm.probs > .5] <- "Up"
 
 table(glm.pred, Direction.2005)
@@ -86,7 +86,7 @@ library(MASS)
 lda.fit <- lda(Direction ~ Lag1 + Lag2, data = Smarket, subset = train)
 plot(lda.fit)
 
-lda.pred <- predict(lda.fit, Smarket.2005)
+lda.pred  <- predict(lda.fit, Smarket.2005)
 lda.class <- lda.pred$class
 table(lda.class, Direction.2005)
 mean(lda.class == Direction.2005)
@@ -100,7 +100,7 @@ in `R` using the `qda()` function, which is also part of the `MASS` library. The
 syntax is identical to that of `lda()`.
 
 ```javascript
-qda.fit <- qda(Direction ~ Lag1 + Lag2, data = Smarket, subset = train)
+qda.fit   <- qda(Direction ~ Lag1 + Lag2, data = Smarket, subset = train)
 qda.class <- predict(qda.fit, Smarket.2005)$class
 table(qda.class, Direction.2005)
 ```
@@ -125,8 +125,8 @@ other for the test set.
 
 ```javascript
 library(class)
-train.X <- cbind(Lag1, Lag2)[train, ]
-test.X <- cbind(Lag1, Lag2)[!train, ]
+train.X         <- cbind(Lag1, Lag2)[train, ]
+test.X          <- cbind(Lag1, Lag2)[!train, ]
 train.Direction <- Direction[train]
 
 set.seed(1)

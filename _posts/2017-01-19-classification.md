@@ -8,7 +8,7 @@ tags: [Logistic regression, LDA, QDA, KNN]
 
 # The Stock Market Data
 
-> We will begin by examining some numerical and graphical summaries of
+We will begin by examining some numerical and graphical summaries of
 the `Smarket` data, which is part of the `ISLR` library. This data set consists of
 percentage returns for the S&P 500 stock index over 1, 250 days, from the
 beginning of 2001 until the end of 2005. For each date, we have recorded
@@ -18,9 +18,19 @@ on the previous day, in billions), Today (the percentage return on the date
 in question) and `Direction` (whether the market was `Up` or `Down` on this
 date).
 
-> We can use the following R codes to view the data structure
+We can use the following `R codes` to view the data structure
 
 ```javascript
 library(ISLR)
 names(Smarket)
+dim(Smarket)
+summary(Smarket)
+cor(Smarket[ ,-9])
 ```
+We can also make a plot of the data
+
+```javascript
+attach(Smarket)
+plot(Volume)
+```
+

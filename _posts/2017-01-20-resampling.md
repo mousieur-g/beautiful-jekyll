@@ -60,8 +60,6 @@ lm.fit3 <- lm(mpg ~ poly(horsepower, 3), data = Auto, subset = train)
 mean((mpg - predict(lm.fit3, Auto))[- train]^2)
 ```
 
-&ensp;
-
 # Leave-One-Out Cross-Validation
 
 In this lab, we will perform linear

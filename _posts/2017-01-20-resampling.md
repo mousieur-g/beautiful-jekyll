@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Cross-Validation and Bootstrap
+title: Cross-Validation and the Bootstrap
 subtitle: Continuez et étudier tous les jours!
 bigimg: /img/cv01.jpg
 tags: [resampling methods]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Cross-Validation and the Bootstrap
+title: Cross-Validation and Bootstrap
 subtitle: Continuez et étudier tous les jours!
 bigimg: /img/cv01.jpg
 tags: [resampling methods]
@@ -115,7 +115,7 @@ cv.error.10
 
 # The Bootstrap
 
-## Estimating the Accuracy of a Statistic of Interest
+### Estimating the Accuracy of a Statistic of Interest
 
 One of the great advantages of the bootstrap approach is that it can be
 applied in almost all situations. No complicated mathematical calculations
@@ -154,7 +154,7 @@ this approach. Below we produce R = 1, 000 bootstrap estimates for $\alpha$.
 boot(Portfolio, alpha.fn, R = 1000)
 ```
 
-## Estimating the Accuracy of a Linear Regression Model
+### Estimating the Accuracy of a Linear Regression Model
 
 We first create a simple function, `boot.fn()`, which takes in the `Auto` data
 set as well as a set of indices for the observations, and returns the intercept

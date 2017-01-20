@@ -60,7 +60,7 @@ lm.fit3 <- lm(mpg ~ poly(horsepower, 3), data = Auto, subset = train)
 mean((mpg - predict(lm.fit3, Auto))[- train]^2)
 ```
 
-<br/>
+&ensp;
 
 # Leave-One-Out Cross-Validation
 
@@ -95,8 +95,6 @@ for(i in 1:5)
 cv.error
 ```
 
-<br/>
-
 # k-Fold Cross-Validation
 
 The `cv.glm()` function can also be used to implement k-fold CV. Below we
@@ -116,8 +114,6 @@ for(i in 1:10)
 
 cv.error.10
 ```
-
-<br/>
 
 # The Bootstrap
 
@@ -161,8 +157,6 @@ this approach. Below we produce R = 1, 000 bootstrap estimates for $\alpha$.
 ```javascript
 boot(Portfolio, alpha.fn, R = 1000)
 ```
-
-<br/>
 
 ### Estimating the Accuracy of a Linear Regression Model
 

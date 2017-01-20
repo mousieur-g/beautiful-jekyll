@@ -154,6 +154,8 @@ this approach. Below we produce R = 1, 000 bootstrap estimates for $\alpha$.
 boot(Portfolio, alpha.fn, R = 1000)
 ```
 
+![](/img/cv02.png)
+
 ### Estimating the Accuracy of a Linear Regression Model
 
 We first create a simple function, `boot.fn()`, which takes in the `Auto` data
@@ -181,3 +183,5 @@ bootstrap estimates for the intercept and slope terms.
 ```javascript
 boot(Auto, boot.fn, 1000)
 ```
+
+![](/img/cv03.png)

@@ -114,7 +114,7 @@ cv.error.10
 ```
 
 # The Bootstrap
-
+***
 ### Estimating the Accuracy of a Statistic of Interest
 
 One of the great advantages of the bootstrap approach is that it can be

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Cross-Validation and the Bootstrap
-subtitle: Continuez et étudier tous les jours!
+subtitle: Continue et fais mes études tous les jours!
 bigimg: /img/cv01.jpg
 tags: [resampling methods]
 ---

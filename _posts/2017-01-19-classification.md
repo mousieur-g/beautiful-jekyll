@@ -66,7 +66,7 @@ glm.fit <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume,
               data = Smarket, family = binomial, subset = train)
 glm.probs <- predict(glm.fit, Smarket.2005, type = "response")
 
-glm.pred <- rep('Down', 252)
+glm.pred <- rep("Down", 252)
 glm.pred[glm.probs > .5] <- "Up"
 
 table(glm.pred, Direction.2005)

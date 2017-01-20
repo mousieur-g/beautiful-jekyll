@@ -148,7 +148,7 @@ alpha.fn(Portfolio, sample(100, 100, replace = T))
 We can implement a bootstrap analysis by performing this command many
 times, recording all of the corresponding estimates for α, and computing
 the resulting standard deviation. However, the `boot()` function automates
-this approach. Below we produce R = 1, 000 bootstrap estimates for <img src = "http://chart.googleapis.com/chart?cht=tx&chl=\alpha" style = "border:none;">.
+this approach. Below we produce R = 1, 000 bootstrap estimates for α.
 
 ```javascript
 boot(Portfolio, alpha.fn, R = 1000)

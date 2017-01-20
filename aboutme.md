@@ -1,16 +1,10 @@
 ---
 layout: page
 title: About me
-subtitle: Why you'd want to go on a date with me
+subtitle: viens et l'apprends avec moi!
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+I am a graduate student of Wuhan University, of course at the same time a lover of [R](https://www.r-project.org/).
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+Welcome for you to come and study with me.
 
-What else do you need?
-
-### my history
-
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](http://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.

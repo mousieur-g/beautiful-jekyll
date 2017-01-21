@@ -318,6 +318,7 @@ model.
 reg.best <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19)
 coef(reg.best, 11)
 ```
+<br/>
 
 # Lab 2: Ridge Regression and the Lasso
 
@@ -474,3 +475,131 @@ lasso.coef[lasso.coef != 0]
 ```
 
 ![](/img/LMSR11.png)
+
+# Lab 3: PCR and PLS Regression
+
+***
+
+### Principal Components Regression
+
+Principal components regression (PCR) can be performed using the `pcr()`
+function, which is part of the `pls` library.We now apply PCR to the `Hitters`
+data, in order to predict `salary`. Again, ensure that the missing values have
+been removed from the data.
+
+```r
+library(pls)
+set.seed(2)
+pcr.fit <- pcr(Salary ~ ., data = Hitters, scale = TRUE, validation = "CV")
+```
+The syntax for the `pcr()` function is similar to that for `lm()`, with a few
+additional options. Setting `scale=TRUE` has the effect of standardizing each
+predictor, prior to generating the principal components, so that
+the scale on which each variable is measured will not have an effect. Setting
+`validation="CV"` causes `pcr()` to compute the 10-fold cross-validation error
+for each possible value of M, the number of principal components used.
+The resulting fit can be examined using `summary()`.
+
+```r
+summary(pcr.fit)
+```
+
+![](/img/LMSR12.png)
+
+The CV score is provided for each possible number of components, ranging
+from M = 0 onwards. (We have printed the CV output only up to M = 4.)
+Note that `pcr()` reports the root mean squared error ; in order to obtain
+the usual MSE, we must square this quantity. 
+
+One can also plot the cross-validation scores using the `validationplot()`
+function. Using `val.type="MSEP"` will cause the cross-validation MSE to be
+plotted.
+
+![](/img/LMSR13.png)
+
+We see that the smallest cross-validation error occurs when M = 16 components
+are used. This is barely fewer than M = 19, which amounts to simply performing 
+least squares, because when all of the components are
+used in PCR no dimension reduction occurs. However, from the plot we
+also see that the cross-validation error is roughly the same when only one
+component is included in the model. This suggests that a model that uses
+just a small number of components might suffice.
+
+The `summary()` function also provides the percentage of variance explained
+in the predictors and in the response using different numbers of components.
+Briefly, we can think of this as the amount of information about the predictors or
+the response that is captured using M principal components. For example,
+setting M = 1 only captures 38.31% of all the variance, or information, in
+the predictors. In contrast, using M = 6 increases the value to 88.63%. If
+we were to use all M = p = 19 components, this would increase to 100%.
+
+We now perform PCR on the training data and evaluate its test set
+performance.
+
+```r
+set.seed(1)
+pcr.fit <- pcr(Salary ~ ., data = Hitters, subset = train, scale = TRUE, validation = "CV")
+validationplot(pcr.fit, val.type = "MSEP")
+```
+
+![](/img/LMSR14.png)
+
+Now we find that the lowest cross-validation error occurs when M = 7
+component are used. We compute the test MSE as follows.
+
+```r
+pcr.pred <- predict(pcr.fit, x[test, ], ncomp = 7)
+mean((pcr.pred - y.test) ^ 2)
+```
+
+This test set MSE is competitive with the results obtained using ridge regression
+and the lasso. However, as a result of the way PCR is implemented,
+the final model is more difficult to interpret because it does not perform
+any kind of variable selection or even directly produce coefficient estimates.
+
+Finally, we fit PCR on the full data set, using M = 7, the number of
+components identified by cross-validation.
+
+![](/img/LMSR15.png)
+
+### Partial Least Squares
+
+We implement partial least squares (PLS) using the `plsr()` function, also
+in the `pls` library. The syntax is just like that of the `pcr()` function.
+
+```r
+set.seed(1)
+pls.fit <- plsr(Salary ~ ., data = Hitters, subset = train, scale = TRUE, validation = "CV")
+summary(pls.fit)
+```
+
+![](/img/LMSR16.png)
+
+The lowest cross-validation error occurs when only M = 2 partial least
+squares directions are used. We now evaluate the corresponding test set
+MSE.
+
+```r
+pls.pred <- predict(pls.fit, x[test, ], ncomp = 2)
+mean((pls.pred - y.test) ^ 2)
+```
+
+The test MSE is comparable to, but slightly higher than, the test MSE
+obtained using ridge regression, the lasso, and PCR.
+
+Finally, we perform PLS using the full data set, using M = 2, the number
+of components identified by cross-validation.
+
+```r
+pls.fit <- plsr(Salary ~ ., data = Hitters, scale = TRUE , ncomp = 2)
+summary(pls.fit)
+```
+
+![](/img/LMSR17.png)
+
+Notice that the percentage of variance in `Salary` that the two-component
+PLS fit explains, 46.40%, is almost as much as that explained using the 
+final seven-component model PCR fit, 46.69%. This is because PCR only
+attempts to maximize the amount of variance explained in the predictors,
+while PLS searches for directions that explain variance in both the predictors
+and the response.

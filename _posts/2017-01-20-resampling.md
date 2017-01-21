@@ -24,7 +24,7 @@ two halves, by selecting a random subset of 196 observations out of the
 original 392 observations. We refer to these observations as the training
 set.
 
-```javascript
+```r
 library(ISLR)
 set.seed(1)
 train <- sample(392, 196)
@@ -34,7 +34,7 @@ train <- sample(392, 196)
 We then use the `subset` option in `lm()` to fit a linear regression using only
 the observations corresponding to the training set.
 
-```javascript
+```r
 lm.fit <- lm(mpg ~ horsepower, data = Auto, subset = train)
 ```
 
@@ -43,7 +43,7 @@ observations, and we use the `mean()` function to calculate the MSE of the
 196 observations in the validation set. Note that the `-train` index below
 selects only the observations that are not in the training set.
 
-```javascript
+```r
 attach(Auto)
 mean((mpg - predict(lm.fit, Auto))[- train]^2)
 ```
@@ -52,7 +52,7 @@ Therefore, the estimated test MSE for the linear regression fit is 26.14. We
 can use the `poly()` function to estimate the test error for the polynomial
 and cubic regressions.
 
-```javascript
+```r
 lm.fit2 <- lm(mpg ~ poly(horsepower, 2), data = Auto, subset = train)
 mean((mpg - predict(lm.fit2, Auto))[- train]^2)
 
@@ -67,7 +67,7 @@ regression using the `glm()` function rather than the `lm()` function because
 the latter can be used together with `cv.glm()`. The `cv.glm()` function is
 part of the `boot` library.
 
-```javascript
+```r
 library(boot)
 glm.fit <- glm(mpg ~ horsepower, data = Auto)
 cv.err <- cv.glm(Auto, glm.fit)
@@ -81,7 +81,7 @@ to i = 5, computes the associated cross-validation error, and stores it in
 the ith element of the vector `cv.error`. We begin by initializing the vector.
 This command will likely take a couple of minutes to run.
 
-```javascript
+```r
 cv.error <- rep(0, 5)
 
 for(i in 1:5) 
@@ -100,7 +100,7 @@ use k = 10, a common choice for k, on the `Auto` data set. We once again set
 a random seed and initialize a vector in which we will store the CV errors
 corresponding to the polynomial fits of orders one to ten.
 
-```javascript
+```r
 set.seed(17)
 cv.error.10 <- rep(0, 10)
 
@@ -125,7 +125,7 @@ Second, we use the the `boot()` function, which is part of the `boot` library, t
 perform the bootstrap by repeatedly sampling observations from the data
 set with replacement.
 
-```javascript
+```r
 alpha.fn <- function(data, index)
 {
   X <- data$X[index]
@@ -141,7 +141,7 @@ from the range 1 to 100, with replacement. This is equivalent
 to constructing a new bootstrap data set and recomputing ˆα based on the
 new data set.
 
-```javascript
+```r
 alpha.fn(Portfolio, sample(100, 100, replace = T))
 ```
 
@@ -150,7 +150,7 @@ times, recording all of the corresponding estimates for α, and computing
 the resulting standard deviation. However, the `boot()` function automates
 this approach. Below we produce R = 1, 000 bootstrap estimates for α.
 
-```javascript
+```r
 boot(Portfolio, alpha.fn, R = 1000)
 ```
 
@@ -167,7 +167,7 @@ coefficient estimate formulas from Chapter 3. Note that we do not need the
 `{` and `}` at the beginning and end of the function because it is only one line
 long.
 
-```javascript
+```r
 boot.fn <- function(data, index)
 {
   return(coef(lm(mpg ~ horsepower, data = data, subset = index)))
@@ -180,7 +180,7 @@ boot.fn(Auto, sample(392, 392, replace = T))
 Next, we use the `boot()` function to compute the standard errors of 1,000
 bootstrap estimates for the intercept and slope terms.
 
-```javascript
+```r
 boot(Auto, boot.fn, 1000)
 ```
 

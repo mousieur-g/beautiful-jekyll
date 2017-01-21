@@ -20,7 +20,7 @@ date).
 
 We can use the following `R codes` to view the data structure.
 
-```javascript
+```r
 library(ISLR)
 names(Smarket)
 dim(Smarket)
@@ -33,7 +33,7 @@ correlations among the predictors in a data set.
 
 We can also make a plot of the data.
 
-```javascript
+```r
 attach(Smarket)
 plot(Volume)
 ```
@@ -57,7 +57,7 @@ rather than some other type of generalized linear model.
 
 We can use the following codes to deal with the logistic regression.
 
-```javascript
+```r
 train <- (Year < 2005)
 Smarket.2005 <- Smarket[!train, ]
 Direction.2005 <- Direction[!train]
@@ -81,7 +81,7 @@ syntax for the `lda()` function is identical to that of `lm()`, and to that of
 `glm()` except for the absence of the `family` option. We fit the model using
 only the observations before 2005.
 
-```javascript
+```r
 library(MASS)
 lda.fit <- lda(Direction ~ Lag1 + Lag2, data = Smarket, subset = train)
 plot(lda.fit)
@@ -99,7 +99,7 @@ We will now fit a QDA model to the `Smarket` data. QDA is implemented
 in `R` using the `qda()` function, which is also part of the `MASS` library. The
 syntax is identical to that of `lda()`.
 
-```javascript
+```r
 qda.fit <- qda(Direction ~ Lag1 + Lag2, data = Smarket, subset = train)
 qda.class <- predict(qda.fit, Smarket.2005)$class
 table(qda.class, Direction.2005)
@@ -123,7 +123,7 @@ We use the `cbind()` function, short for column bind, to bind the `Lag1` and
 `Lag2` variables together into two matrices, one for the training set and the
 other for the test set.
 
-```javascript
+```r
 library(class)
 train.X <- cbind(Lag1, Lag2)[train, ]
 test.X <- cbind(Lag1, Lag2)[!train, ]

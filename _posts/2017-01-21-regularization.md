@@ -419,3 +419,58 @@ predict(out, type = "coefficients", s = bestlam)[1:20, ]
 
 As expected, none of the coefficients are zero — ridge regression does not
 perform variable selection!
+
+### The Lasso
+
+We saw that ridge regression with a wise choice of λ can outperform least
+squares as well as the null model on the `Hitters` data set. We now ask
+whether the lasso can yield either a more accurate or a more interpretable
+model than ridge regression. In order to fit a lasso model, we once again
+use the `glmnet()` function; however, this time we use the argument `alpha=1`.
+Other than that change, we proceed just as we did in fitting a ridge model.
+
+```r
+lasso.mod <- glmnet(x[train, ], y[train], alpha = 1, lambda = grid)
+plot(lasso.mod)
+```
+
+![](/img/LMSR08.png)
+
+We can see from the coefficient plot that depending on the choice of tuning
+parameter, some of the coefficients will be exactly equal to zero. We now
+perform cross-validation and compute the associated test error.
+
+```r
+set.seed(1)
+cv.out <- cv.glmnet(x[train, ], y[train], alpha = 1)
+plot(cv.out)
+
+bestlam <- cv.out$lambda.min
+lasso.pred <- predict(lasso.mod, s = bestlam, newx = x[test, ])
+mean((lasso.pred - y.test) ^ 2)
+```
+
+![](/img/LMSR09.png)
+
+This is substantially lower than the test set MSE of the null model and of
+least squares, and very similar to the test MSE of ridge regression with λ
+chosen by cross-validation.
+
+However, the lasso has a substantial advantage over ridge regression in
+that the resulting coefficient estimates are sparse. Here we see that twelve
+of the nineteen coefficient estimates are exactly zero. So the lasso model
+with λ chosen by cross-validation contains only seven variables.
+
+```r
+out <- glmnet(x, y, alpha = 1, lambda = grid)
+lasso.coef <- predict(out, type = "coefficients", s = bestlam)[1:20, ]
+lasso.coef
+```
+
+![](/img/LMSR10.png)
+
+```r
+lasso.coef[lasso.coef != 0]
+```
+
+![](/img/LMSR11.png)

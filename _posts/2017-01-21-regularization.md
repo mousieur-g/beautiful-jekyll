@@ -476,6 +476,8 @@ lasso.coef[lasso.coef != 0]
 
 ![](/img/LMSR11.png)
 
+<br/>
+
 # Lab 3: PCR and PLS Regression
 
 ***

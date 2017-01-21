@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Linear Model Selection and Regularization (one)
+title: Linear Model Selection and Regularization
 subtitle: an introduction to statistical learning
 bigimg: /img/LMSR01.jpg
 tags: [model selection, ridge regression, lasso, PCR, PLS]
@@ -22,19 +22,31 @@ It returns a vector of the same length as the input vector, with a `TRUE`
 for any elements that are missing, and a `FALSE` for non-missing elements.
 The `sum()` function can then be used to count all of the missing elements.
 
-![](/img/LMSR02.png)
+```r
+library(ISLR)
+fix(Hitters)
+names(Hitters)
+dim(Hitters)
+sum(is.na(Hitters$Salary))
+```
 
 Hence we see that `Salary` is missing for 59 players. The `na.omit()` function
 removes all of the rows that have missing values in any variable.
 
-![](/img/LMSR03.png)
+```r
+Hitters <- na.omit(Hitters)
+```
 
 The `regsubsets()` function (part of the leaps library) performs best subset selection 
 by identifying the best model that contains a given number of predictors, where best 
 is quantified using RSS. The syntax is the same as for `lm()`. The `summary()` command 
 outputs the best set of variables for each model size.
 
-![](/img/LMSR04.png)
+```r
+library(leaps)
+regfit.full <- regsubsets(Salary ~ ., Hitters)
+summary(regfit.full)
+```
 
 An asterisk indicates that a given variable is included in the corresponding
 model. For instance, this output indicates that the best two-variable model
@@ -43,25 +55,40 @@ up to the best eight-variable model. But the `nvmax` option can be used
 in order to return as many variables as are desired. Here we fit up to a
 nineteen-variable model.
 
-![](/img/LMSR05.png)
+```r
+regfit.full <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19)
+reg.summary <- summary(regfit.full)
+```
 
 The `summary()` function also returns R2, RSS, adjusted R2, Cp, and BIC.
 We can examine these to try to select the best overall model.
 
-![](/img/LMSR06.png)
+```r
+names(reg.summary)
+```
+
+![](/img/LMSR02.png)
 
 For instance, we see that the R2 statistic increases from 32%, when only
 one variable is included in the model, to almost 55%, when all variables
 are included. As expected, the R2 statistic increases monotonically as more
 variables are included.
 
-![](/img/LMSR07.png)
+```r
+reg.summary$rsq
+```
+
+![](/img/LMSR03.png)
 
 Plotting RSS, adjusted R2, Cp, and BIC for all of the models at once will
 help us decide which model to select. Note the `type="l"` option tells `R` to
 connect the plotted points with lines.
 
-![](/img/LMSR08.png)
+```r
+opar <- par(mfrow = c(2, 2))
+plot(reg.summary$rss, xlab = "Number of Variables", ylab = "RSS", type = "l")
+plot(reg.summary$adjr2, xlab = "Number of Variables", ylab = "Adjusted RSq", type = "l")
+```
 
 The `points()` command works like the `plot()` command, except that it
 puts points on a plot that has already been created, instead of creating a
@@ -69,19 +96,35 @@ new plot. The `which.max()` function can be used to identify the location of
 the maximum point of a vector. We will now plot a red dot to indicate the
 model with the largest adjusted R2 statistic.
 
-![](/img/LMSR09.png)
+```r
+which.max(reg.summary$adjr2)
+points(11, reg.summary$adjr2[11], col = "red", cex = 2, pch = 20)
+```
 
 In a similar fashion we can plot the Cp and BIC statistics, and indicate the
 models with the smallest statistic using `which.min()`.
 
-![](/img/LMSR10.png)
+```r
+plot(reg.summary$cp, xlab = "Number of Variables", ylab = "Cp", type = "l")
+which.min(reg.summary$cp)
+points(10, reg.summary$cp[10], col = "red", cex = 2, pch = 20)
+
+plot(reg.summary$bic, xlab = "Number of Variables", ylab = "BIC", type = "l")
+which.min reg.summary$bic)
+points(6, reg.summary$bic[6], col = "red", cex = 2, pch = 20)
+```
+
+![](/img/LMSR04.png)
 
 The `regsubsets()` function has a built-in `plot()` command which can
 be used to display the selected variables for the best model with a given
 number of predictors, ranked according to the BIC, Cp, adjusted R2, or
 AIC. To find out more about this function, type `?plot.regsubsets`.
 
-![](/img/LMSR11.png)
+```r
+plot(regfit.full, scale = "r2")
+plot(regfit.full,scale = "bic")
+```
 
 The top row of each plot contains a black square for each variable selected
 according to the optimal model associated with that statistic. For instance,
@@ -90,15 +133,19 @@ with the lowest BIC is the six-variable model that contains only `AtBat`,
 `Hits`, `Walks`, `CRBI`, `DivisionW`, and `PutOuts`. We can use the `coef()` function
 to see the coefficient estimates associated with this model.
 
-![](/img/LMSR12.png)
-
 ### Forward and Backward Stepwise Selection
 
 We can also use the `regsubsets()` function to perform forward stepwise
 or backward stepwise selection, using the argument `method="forward"` or
 `method="backward"`.
 
-![](/img/LMSR13.png)
+```r
+regfit.fwd <- regsubsets(Salary ~ ., data = Hitters , nvmax = 19, method = "forward")
+summary(regfit.fwd)
+
+regfit.bwd <- regsubsets(Salary ~ ., data = Hitters , nvmax = 19, method = "backward")
+summary(regfit.bwd)
+```
 
 For instance, we see that using forward stepwise selection, the best onevariable
 model contains only `CRBI`, and the best two-variable model additionally
@@ -106,8 +153,6 @@ includes `Hits`. For this data, the best one-variable through sixvariable
 models are each identical for best subset and forward selection.
 However, the best seven-variable models identified by forward stepwise selection,
 backward stepwise selection, and best subset selection are different.
-
-![](/img/LMSR14.png)
 
 ### Choosing Among Models using the Validation Set Approach and Cross-Validation
 
@@ -133,12 +178,18 @@ a `TRUE` if the observation is in the test set, and a `FALSE` otherwise. Note th
 vice versa. We also set a random seed so that the user will obtain the same
 training set / test set split.
 
-![](/img/LMSR15.png)
+```r
+set.seed(1)
+train <- sample(c(TRUE, FALSE), nrow(Hitters), rep = TRUE)
+test <- (!train)
+```
 
 Now, we apply `regsubsets()` to the training set in order to perform best
 subset selection.
 
-![](/img/LMSR16.png)
+```r
+regfit.best <- regsubsets(Salary ~ ., data = Hitters[train, ], nvmax = 19)
+```
 
 Notice that we subset the `Hitters` data frame directly in the call in order
 to access only the training subset of the data, using the expression
@@ -146,7 +197,9 @@ to access only the training subset of the data, using the expression
 model of each model size. We first make a model matrix from the test
 data.
 
-![](/img/LMSR17.png)
+```r
+test.mat <- model.matrix(Salary ~ ., data = Hitters[test, ])
+```
 
 The `model.matrix()` function is used in many regression packages for building
 an “X” matrix from data. Now we run a loop, and for each size i, we
@@ -154,17 +207,38 @@ extract the coefficients from `regfit.best` for the best model of that size,
 multiply them into the appropriate columns of the test model matrix to
 form the predictions, and compute the test MSE.
 
-![](/img/LMSR18.png)
+```r
+val.errors <- rep(NA, 19)
+
+for(i in 1:19) 
+{
+  coefi <- coef(regfit.best, id = i)
+  pred <- test.mat[ ,names(coefi)] %*% coefi
+  val.errors[i] <- mean((Hitters$Salary[test] - pred)^2)
+}
+```
 
 We find that the best model is the one that contains ten variables.
 
-![](/img/LMSR19.png)
+```r
+library(migrittr)
+val.errors %>% which.min %>% coef(regfit.best, .)
+```
 
 This was a little tedious, partly because there is no `predict()` method
 for `regsubsets()`. Since we will be using this function again, we can capture
 our steps above and write our own predict method.
 
-![](/img/LMSR20.png)
+```r
+predict.regsubsets <- function(object, newdata, id, ...) 
+{
+  form <- as.formula(object$call[[2]])
+  mat <- model.matrix(form, newdata)
+  coefi <- coef(object, id = id)
+  xvars <- names(coefi)
+  mat[ ,xvars] %*% coefi
+}
+```
 
 Our function pretty much mimics what we did above. The only complex
 part is how we extracted the formula used in the call to `regsubsets()`. We
@@ -178,7 +252,10 @@ model, rather than simply using the variables that were obtained
 from the training set, because the best ten-variable model on the full data
 set may differ from the corresponding model on the training set.
 
-![](/img/LMSR21.png)
+```r
+regfit.best <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19)
+coef(regfit.best, 10)
+```
 
 In fact, we see that the best ten-variable model on the full data set has a
 different set of variables than the best ten-variable model on the training
@@ -191,7 +268,12 @@ with its clever subsetting syntax, R makes this job quite easy. First, we
 create a vector that allocates each observation to one of k = 10 folds, and
 we create a matrix in which we will store the results.
 
-![](/img/LMSR22.png)
+```r
+k <- 10
+set.seed(1)
+folds <- sample(1:k, nrow(Hitters), replace = TRUE)
+cv.errors <- matrix (NA, k, 19, dimnames = list(NULL , paste(1:19)))
+```
 
 Now we write a for loop that performs cross-validation. In the jth fold, the
 elements of `folds` that equal j are in the test set, and the remainder are in
@@ -199,7 +281,17 @@ the training set. We make our predictions for each model size (using our
 new `predict()` method), compute the test errors on the appropriate subset,
 and store them in the appropriate slot in the matrix `cv.errors`.
 
-![](/img/LMSR23.png)
+```r
+for(j in 1:k)
+{
+  best.fit <- regsubsets(Salary ~ ., data = Hitters[folds != j, ], nvmax = 19)
+  for(i in 1:19) 
+  {
+    pred <- predict(best.fit, Hitters[folds == j, ], id = i)
+    cv.errors[j, i] <- mean((Hitters$Salary[folds == j] - pred)^2)
+  }
+}
+```
 
 This has given us a 10×19 matrix, of which the (i, j)th element corresponds
 to the test MSE for the ith cross-validation fold for the best j-variable
@@ -207,10 +299,20 @@ model. We use the `apply()` function to average over the columns of this
 matrix in order to obtain a vector for which the jth element is the crossvalidation
 error for the j-variable model.
 
-![](/img/LMSR24.png)
+```r
+mean.cv.errors <- apply(cv.errors, 2, mean)
+mean.cv.errors
+par(mfrow = c(1, 1))
+plot(mean.cv.errors, type = "b")
+```
+
+![](/img/LMSR05.png)
 
 We see that cross-validation selects an eleven-variable model. We now perform
 best subset selection on the full data set in order to obtain the elevenvariable
 model.
 
-![](/img/LMSR25.png)
+```r
+reg.best <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19)
+coef(reg.best, 11)
+```

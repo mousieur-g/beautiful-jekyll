@@ -316,3 +316,104 @@ model.
 reg.best <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19)
 coef(reg.best, 11)
 ```
+
+# Lab 2: Ridge Regression and the Lasso
+
+We will use the `glmnet` package in order to perform ridge regression and
+the lasso. The main function in this package is `glmnet()`, which can be used
+to fit ridge regression models, lasso models, and more. This function has
+slightly different syntax from other model-fitting functions that we have
+encountered thus far in this book. In particular, we must pass in an `x`
+matrix as well as a `y` vector, and we do not use the `y ∼ x` syntax. We will
+now perform ridge regression and the lasso in order to predict `Salary` on
+the `Hitters` data. Before proceeding ensure that the missing values have
+been removed from the data.
+
+```r
+x <- model.matrix(Salary ~ ., Hitters)[ , -1]
+y <- Hitters$Salary
+```
+
+The `model.matrix()` function is particularly useful for creating x; not only
+does it produce a matrix corresponding to the 19 predictors but it also
+automatically transforms any qualitative variables into dummy variables.
+The latter property is important because `glmnet()` can only take numerical,
+quantitative inputs.
+
+### Ridge Regression
+
+The `glmnet()` function has an `alpha` argument that determines what type
+of model is fit. If `alpha=0` then a ridge regression model is fit, and if `alpha=1`
+then a lasso model is fit. We first fit a ridge regression model.
+
+```r
+library(glmnet)
+grid <- 10 ^ seq(10, -2, length = 100)
+ridge.mod <- glmnet(x, y, alpha = 0, lambda = grid)
+```
+
+Associated with each value of λ is a vector of ridge regression coefficients,
+stored in a matrix that can be accessed by `coef()`. In this case, it is a 20×100 matrix, 
+with 20 rows (one for each predictor, plus an intercept) and 100 columns (one for each value of λ).
+
+```r
+ridge.mod$lambda[50]
+coef(ridge.mod)[ , 50]
+```
+
+We can use the `predict()` function for a number of purposes. For instance,
+we can obtain the ridge regression coefficients for a new value of λ, say 50:
+
+```r
+predict(ridge.mod, s = 50, type = "coefficients")[1:20, ]
+```
+
+We first set a random seed so that the results obtained will be reproducible.
+
+```r
+set.seed(1)
+train <- sample(1:nrow(x), nrow(x)/2)
+test <- (-train)
+y.test <- y[test]
+```
+
+Next we fit a ridge regression model on the training set, and evaluate
+its MSE on the test set, using λ = 4. Note the use of the `predict()`
+function again. This time we get predictions for a test set, by replacing
+`type="coefficients"` with the `newx` argument.
+
+```r
+ridge.mod <- glmnet(x[train, ], y[train], alpha = 0, lambda = grid, thresh = 1e-12)
+ridge.pred <- predict(ridge.mod, s=4, newx = x[test, ])
+mean((ridge.pred - y.test)^2)
+```
+
+In general, instead of arbitrarily choosing λ = 4, it would be better to
+use cross-validation to choose the tuning parameter λ. We can do this using
+the built-in cross-validation function, `cv.glmnet()`. By default, the function
+performs ten-fold cross-validation, though this can be changed using the
+argument `folds`. Note that we set a random seed first so our results will be
+reproducible, since the choice of the cross-validation folds is random.
+
+```r
+set.seed(1)
+cv.out <- cv.glmnet(x[train, ], y[train], alpha = 0)
+plot(cv.out)
+
+bestlam <- cv.out$lambda.min
+bestlam
+```
+
+![](/img/LMSR06.png)
+
+Finally, we refit our ridge regression model on the full data set,
+using the value of λ chosen by cross-validation, and examine the coefficient
+estimates.
+
+```r
+out <- glmnet(x, y, alpha = 0)
+predict(out, type = "coefficients", s = bestlam)[1:20, ] 
+```
+
+As expected, none of the coefficients are zero — ridge regression does not
+perform variable selection!

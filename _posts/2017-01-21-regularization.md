@@ -126,6 +126,8 @@ plot(regfit.full, scale = "r2")
 plot(regfit.full,scale = "bic")
 ```
 
+![](/img/Rplot.png)
+
 The top row of each plot contains a black square for each variable selected
 according to the optimal model associated with that statistic. For instance,
 we see that several models share a BIC close to −150. However, the model

@@ -14,7 +14,7 @@ library(ISLR)
 attach(Wage)
 ```
 
-# Polynomial Regression and Step Functions
+# Polynomial Regression
 
 We first fit the model using the following command:
 

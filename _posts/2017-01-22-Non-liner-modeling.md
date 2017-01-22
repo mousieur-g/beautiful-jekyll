@@ -2,7 +2,7 @@
 layout: post
 title: Non-Linear Modeling
 subtitle: Bon courage
-bigimg: /img/nlm01.jpg
+bigimg: /img/nlm01.jpeg
 tags: [polynomial regression, splines, GAM]
 ---
 

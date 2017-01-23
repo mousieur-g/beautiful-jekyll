@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Linear Model Selection and Regularization
+title: Linear Model Selection
 subtitle: An introduction to statistical learning
 bigimg: /img/LMSR01.jpg
 tags: [model selection, ridge regression, lasso, PCR, PLS]

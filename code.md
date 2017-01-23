@@ -9,3 +9,5 @@ All the R codes mentioned in the posts are available here:
 link: [http://pan.baidu.com/s/1hsBOFAk](http://pan.baidu.com/s/1hsBOFAk)
 
 key: r8f4
+
+Contact with me on [Github](https://github.com/mousieur-g) if the link is invalid.

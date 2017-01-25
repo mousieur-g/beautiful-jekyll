@@ -116,11 +116,11 @@ compare
 
 The result is just like the following table:
 
-<center>
+<center>{
 | nstart = 1 | nstart = 20 |
 |:----------:|:-----------:|
 | 128.6066   | 128.6066    |
-</center>
+}</center>
 
 <br/>
 

@@ -116,9 +116,11 @@ compare
 
 The result is just like the following table:
 
+<center>
 | nstart = 1 | nstart = 20 |
 |:----------:|:-----------:|
 | 128.6066   | 128.6066    |
+</center>
 
 <br/>
 

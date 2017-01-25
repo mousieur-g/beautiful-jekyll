@@ -108,7 +108,8 @@ Here we compare using `nstart=1` to `nstart=20`.
 ```r
 library(plyr)
 compare <- data.frame(nstart = c(1, 20)) %>% 
-                      mlply(kmeans, args = list(x = x, centers = 2)) %>% 
+                      mlply(kmeans, args = list(x = x, 
+                                           centers = 2)) %>% 
                       laply(function(x) x$tot.withinss)      
 names(compare) <- c("nstart = 1", "nstart = 20")
 compare

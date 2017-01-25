@@ -144,3 +144,6 @@ cutree(hc.single, 2)
 ```
 
 ![](/img/nl08.png)
+
+For this part, the book of <font color = #00ffff>an introduction to statistical learning</font> is 
+relatively simple, more labs are to be displayed here in my later post.

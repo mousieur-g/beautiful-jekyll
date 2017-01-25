@@ -58,6 +58,8 @@ pr.out$rotation
 
 # Lab 2: Clustering
 
+***
+
 ### K-Means Clustering
 
 The function kmeans() performs K-means clustering in R. We begin with
@@ -145,5 +147,5 @@ cutree(hc.single, 2)
 
 ![](/img/nl08.png)
 
-For this part, the book of <font color='#4590a3'>an introduction to statistical learning</font> is 
+For this part, the book of <font color='#00ffff'>an introduction to statistical learning</font> is 
 relatively simple, more labs are to be displayed here in my later post.

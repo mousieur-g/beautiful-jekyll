@@ -120,6 +120,8 @@ The result is just like the following table:
 |:----------:|:-----------:|
 | 128.6066   | 128.6066    |
 
+<br/>
+
 ### Hierarchical Clustering
 
 The `hclust(`) function implements hierarchical clustering in `R`. In the following

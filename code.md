@@ -10,4 +10,4 @@ link: [http://pan.baidu.com/s/1hsBOFAk](http://pan.baidu.com/s/1hsBOFAk)
 
 key: `r8f4`
 
-Contact with me on [Github](https://github.com/mousieur-g) if the link is invalid.
+Contact with me on <font color='#1E90FF'>Github</font> if the link is invalid.

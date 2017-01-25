@@ -151,4 +151,4 @@ cutree(hc.single, 2)
 For this part, the book of <font color='#1E90FF'>an introduction to statistical learning</font> is 
 relatively simple, more labs are to be displayed here in my later post.
 
-For more results of the clustering on `iris` dataset, please go to my [Shiny App](https://mousieur-g.shinyapps.io/clustering/)
+For more results of the clustering on `iris` dataset, please go to my [Shiny App](https://mousieur-g.shinyapps.io/clustering/).

@@ -60,4 +60,6 @@ system('R CMD Rd2pdf npar')
 
 &emsp;&emsp;打开*project*，点击*Build*标签下的*Install and Restart*，就能生成并安装自己的*R*包了。同时，点击*Build Source Package*可以生成*.tar.gz*格式的安装包。
 
+![](/pics/20180514/08.png)
+
 &emsp;&emsp;这样，*R*包就制作安装成功了。

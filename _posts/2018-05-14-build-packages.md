@@ -2,7 +2,7 @@
 layout: post
 title: 利用Rstudio创建R包
 subtitle: 来源《R语言实战》
-bigimg: /pics/20180514/01.png
+bigimg: /pics/20180514/01.jpg
 tags: Rstudio, R包, R语言学习笔记
 ---
 

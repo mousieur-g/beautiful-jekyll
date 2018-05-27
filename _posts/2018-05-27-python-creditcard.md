@@ -8,7 +8,7 @@ tags: Python，Logistic
 
 ## 数据
  
-&emsp;&emsp;该信用卡欺诈数据来源于[天善智能学院](https://edu.hellobi.com/course/144/lessons)，包含284807条样本数据，涉及30个特征变量（*Time*, *V1* ~ *V28*, *Amount*）及1个行为类标签（*Class*），部分截图如下，其中*V6* ~ *V24*已经被隐藏。
+&emsp;&emsp;该信用卡欺诈数据来源于[天善智能学院](https://edu.hellobi.com/course/144/lessons)，包含284807条样本数据，涉及30个特征变量（*Time*, *V1* ~ *V28*, *Amount*）及1个行为类标签（*Class*, 0代表普通刷卡行为，1代表存在信用卡欺诈），部分截图如下，其中*V6* ~ *V24*已经被隐藏。
  
 ![](/pics/20180527/02.png)
 

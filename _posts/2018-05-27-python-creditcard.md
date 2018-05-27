@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Logistic模型识别信用卡欺诈
+title: LR模型识别信用卡欺诈
 subtitle: Python学习笔记
 bigimg: /pics/20180527/01.jpg
 tags: Python，Logistic
